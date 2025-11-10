@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Ваша корзина</h3>
+
+{% if cart.items.exists %}
+<div class="row g-3">
+    {% for item in cart.items.all %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            {% if item.product.image %}
+            <img src="{{ item.product.image.url }}" class="card-img-top" alt="{{ item.product.name }}">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ item.product.name }}</h5>
+                <p class="card-text mb-1">Цена: {{ item.price_at_add }} ₽</p>
+                <p class="card-text mb-2">Количество: {{ item.quantity }}</p>
+                <p class="card-text"><strong>Итого: {{ item.total_price }} ₽</strong></p>
+
+                <div class="mt-auto d-flex justify-content-between">
+                    <form method="post" action="{% url 'remove_from_cart' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                    </form>
+                    <!-- Здесь можно добавить кнопку изменения количества, позже -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-4 text-end">
+    <h5>Общая сумма: {{ cart.total_price }} ₽</h5>
+    <a href="#" class="btn btn-success">Оформить заказ</a>
+</div>
+
+{% else %}
+<p>Корзина пуста.</p>
+{% endif %}
+{% endblock %}

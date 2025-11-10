@@ -1,0 +1,32 @@
+<footer class="bg-dark text-light mt-auto py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <h5>Категории</h5>
+        <ul class="list-unstyled">
+          {% for category in categories %}
+            <li><a href="{% url 'category_detail' category.id %}" class="text-light text-decoration-none">{{ category.name }}</a></li>
+          {% empty %}
+            <li class="text-muted">Нет категорий</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <h5>Контакты</h5>
+        <p>Email: info@kids-shop.ru</p>
+        <p>Телефон: +7 (900) 123-45-67</p>
+      </div>
+
+      <div class="col-md-4">
+        <h5>Профиль</h5>
+        {% if user.is_authenticated %}
+          <p>Баланс: {{ user.balance }} ₽</p>
+          <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">Выйти</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Авторизация</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
